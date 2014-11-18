@@ -1,25 +1,26 @@
-#include String.h
+#include "String.hpp"
+#include <assert.h>
 
 String::String(){
-  s = NULL;
+  s = 0;
   length = 0;
   maxl = 0;
 }
 
 String::String(int length){
-  s = NULL;
-  this.length = length;
+  s = 0;
+  this->length = length;
   maxl = length;
 }
 
 String::String(char *string){
   s = string;
-  this.length = 0;
+  this->length = 0;
   while(s[length++]);
-  maxLength = length;
+  maxl = length;
 }
 
-String::String & String::operator=(const String::String &other){
+String & String::operator=(const String &other){
   
 }
 
@@ -64,5 +65,5 @@ void String::insert(char c, int index){
 }
 
 String::~String(){
-  if(s) free(s);
+  if(s) delete s;
 }
