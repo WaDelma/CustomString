@@ -1,10 +1,15 @@
 #include "String.hpp"
 #include <iostream>
+#include <iterator>
 
+using namespace std;
 int main(){
-  String s = new String("lol");
-  for(int i = s.iterator().start(); i < s.iterator().end(); i++){
-    cout << i;
+  String s();
+  s.push_back('a');
+  s.push_back('b');
+  s.push_back('c');
+  for(iterator it = s.start(); it < s.end(); ++it){
+    cout << it << '\n';
   }
   return 0;
 }
