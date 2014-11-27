@@ -4,7 +4,7 @@
 
 using namespace std;
 int main(){
-  String s();
+  String s;
   s.push_back('a');
   s.push_back('b');
   s.push_back('c');

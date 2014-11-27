@@ -1,6 +1,15 @@
 #ifndef String_HPP
 #define String_HPP
+#include <iterator>
+
 class String {
+typedef char          value_type;
+typedef char         *pointer;
+typedef const char   *const_pointer;
+typedef char         &reference;
+typedef const char   &const_reference;
+//typedef size_t     size_type;
+//typedef ptrdiff_t  difference_type;
 private:
   char *s;
   int length;
@@ -19,17 +28,51 @@ public:
   void insert(char c, int index);
   void erase();
 
-  class iterator{
+  class string_iterator : public std::iterator<std::random_access_iterator_tag, char> {
+  private:
+    char *buf;
+    int pos;
   public:
-    char *cur;
-    iterator& operator++(){
-      ++cur;
+    string_iterator(char *b, int p) : buf(b), pos(p) {
+    }
+    char &operator*() {
+      return buf[pos];
+    }
+    char *operator->() {
+      return &(operator*());
+    }
+    string_iterator &operator++() {
+      ++pos;
+      return *this;
+    }
+    string_iterator operator++(int) {
+      string_iterator tmp(*this);
+      ++(*this);
+      return tmp;
+    }
+    string_iterator operator+(difference_type n) {
+      string_iterator tmp(*this);
+      tmp.pos += n;
+      return tmp;
+    }
+    string_iterator &operator+=(difference_type n) {
+      pos += n;
       return *this;
     }
   };
-  class const_iterator{
 
-  };
+  typedef string_iterator iterator; 
+  iterator begin() {
+    return iterator(s, 0);
+  }
+  iterator end() {
+    return iterator(s, length);
+  }
+
+
+class const_iterator{
+
+};
 //  struct iteratorBase;
 //  struct constIteratorBase {
 //    typedef const char& reference;
@@ -74,7 +117,7 @@ public:
 //        ++*this;
 //        return tmp;
 //    }
-//    self operator--(int){
+//    self operator--(int){ with the current size of the collection.
 //        self tmp = *this;
 //        --*this;
 //        return tmp;
