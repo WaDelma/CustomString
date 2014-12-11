@@ -1,69 +1,146 @@
 #include "String.hpp"
 #include <assert.h>
+#include <iostream>
 
+typedef unsigned int index;
 String::String(){
-  s = 0;
-  length = 0;
-  maxl = 0;
+	s = new char[8];
+	length = 0;
+	maxl = 8;
 }
 
-String::String(int length){
-  s = 0;
-  this->length = length;
-  maxl = length;
+String::String(index length){
+	length = next2power(length);
+	s = new char[length];
+	this->length = length;
+	maxl = length;
 }
 
 String::String(char *string){
-  s = string;
-  this->length = 0;
-  while(s[length++]);
-  maxl = length;
+	length = 0;
+    while(string[length++]);
+    --length;
+    maxl = next2power(length);
+    s = new char[maxl];
+    for(index i = 0; i < length; i++){
+		s[i] = string[i];
+	}
 }
 
-String & String::operator=(const String &other){
-  
+String& String::operator=(const String &other){
+	delete s;
+	length = other.length;
+	maxl = other.maxl;
+	s = new char[maxl];
+	for(index n = 0; n < other.length; n++){
+		s[n] = other.s[n];
+	}
+	return *this;
 }
 
-char String::operator[](int index){
-  assert(index >= 0);
-  assert(index < length);
-  if(s) return s[index];
-  return 0;
+String& String::operator+= (char c){
+	push_back(c);
 }
 
+String& String::operator+= (const String &str){
+	push_back(str);
+}
+
+index String::size() const{
+	return length;
+}
+
+index String::operator== (const String &str) const{
+	
+}
+
+char& String::operator[](index i) const{
+	assert(i >= 0);
+	assert(i < length);
+	//if(!s) throw  stupid exception
+	return s[i];
+}
+
+// Adds character to the end of string
+// If there is not enough space left it grows backing array
 void String::push_back(char c){
-  if(++length >= maxl){
-    char *n = new char[length];
-    char *t = n;
-    while(*n++ = *s++);
-    s = t;
-    maxl = length;
-  }
-  s[length - 1] = c;
+	ensure(1);
+	s[length++] = c;
+}
+
+void String::push_back(const String &c){
+	ensure(c.size());
+	for(index i = 0; i < c.size(); i++){
+		s[length++] = c[i];
+	}
 }
 
 char String::pop_back(){
-  assert(length > 0);
-  if(s) return s[--length];
-  return 0;
+	assert(s);
+	assert(length > 0);
+	return s[--length];
 }
  
-void String::insert(char c, int index){
-   assert(index >= 0);
-   assert(index < length);
-   if(++length >= maxl){
-    char *n = new char[length];
-    char *t = n;
-	int i = 0;
-    do{
-	  if(i == index) ++n;
-	} while(*n++ = *s++);
-    s = t;
-    maxl = length;
-  }
-  s[index] = c;
+void String::insert(char c, index i){
+	assert(i >= 0);
+	assert(i < length);
+	ensure(1);
+	++length;
+	for(char last = c; i < length; ++i){
+		char temp = s[i];
+		s[i] = last;
+		last = temp;
+	}
+}
+
+char& String::erase(index i){
+	assert(i >= 0);
+	assert(i < length);
+	char& result = s[i];
+	++i;
+	for(; i < length; ++i){
+		s[i - 1] = s[i];
+	}
+	--length;
+	return result;
+}
+
+void String::swap(String& str){
+	char *tempS = str.s;
+	index tempLength = str.length;
+	index tempMaxl = str.maxl;
+	str.s = s;
+	str.length = length;
+	str.maxl = maxl;
+	s = tempS;
+	length = tempLength;
+	maxl = tempMaxl;
+}
+
+void String::ensure(index add){
+	index newl = length + add;
+	if(newl < maxl){
+		return;
+	}
+	newl = next2power(newl);
+	char *n = new char[newl];
+	for(index i = 0; i < length; ++i){
+		n[i] = s[i];
+	}
+	s = n;
+	maxl = newl;
+}
+
+index String::next2power(index i){
+	i--;
+	i |= i >> 1;
+	i |= i >> 2;
+	i |= i >> 4;
+	i |= i >> 8;
+	i |= i >> 16;
+	i++;
 }
 
 String::~String(){
-  if(s) delete s;
+	delete[] s;
 }
