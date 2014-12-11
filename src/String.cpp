@@ -1,5 +1,5 @@
 #include "String.hpp"
-#include <assert.h>
+#include "assert.hpp"
 #include <iostream>
 
 typedef unsigned int index;
@@ -16,7 +16,7 @@ String::String(index length){
 	maxl = length;
 }
 
-String::String(char *string){
+String::String(const char *string){
 	length = 0;
     while(string[length++]);
     --length;
@@ -50,8 +50,15 @@ index String::size() const{
 	return length;
 }
 
-index String::operator== (const String &str) const{
-	
+bool String::operator== (const String &str) const{
+	if(size() != str.size()){
+		return false;
+	}
+	int i = 0;
+	while(i < size() && s[i] == str.s[i]){
+		++i;
+	}
+	return i == size();
 }
 
 char& String::operator[](index i) const{

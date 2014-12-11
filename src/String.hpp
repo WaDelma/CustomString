@@ -1,5 +1,5 @@
-#ifndef String_HPP
-#define String_HPP
+#ifndef STRING_HPP
+#define STRING_HPP
 #include <iostream>
 class String {
 	typedef unsigned int index;
@@ -7,25 +7,25 @@ private:
 	char *s;
 	index length;
 	index maxl;
-	void ensure(index add);
-	index next2power(index i);
+	void ensure(index);
+	index next2power(index);
 public:
 	String();
-	explicit String(index length);
-	String(char *c);
+	explicit String(index);
+	String(const char*);
 	~String();
-	String& operator+= (char c);
-	String& operator+= (const String &str); 
-	String& operator= (const String &str);
-	index operator== (const String &str) const;
-	char& operator[] (index i) const;
+	String& operator+= (char);
+	String& operator+= (const String&); 
+	String& operator= (const String&);
+	bool operator== (const String&) const;
+	char& operator[] (index) const;
 	bool check() const;
-	void push_back(char c);
-	void push_back(const String &str);
+	void push_back(char);
+	void push_back(const String&);
 	char pop_back();
-	void insert(char c, index i);
-	char& erase(index i);
-	void swap(String& str);
+	void insert(char, index);
+	char& erase(index);
+	void swap(String&);
 	index size() const;
 	template<typename ch>
 	class string_iterator {
