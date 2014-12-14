@@ -64,7 +64,6 @@ bool String::operator== (const String &str) const{
 char& String::operator[](index i) const{
 	assert(i >= 0);
 	assert(i < length);
-	//if(!s) throw  stupid exception
 	return s[i];
 }
 

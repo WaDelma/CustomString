@@ -2,6 +2,7 @@
 #include "assert.hpp"
 #include <iostream>
 #include <functional>
+#include <sstream>
 
 using namespace std;
 void testEmpty(){
@@ -56,14 +57,21 @@ void testSwap(){
 }
 
 void testRead(){
-	String sss;
-	cin >> sss;
-	cout << sss;
+	String s;
+	istringstream is("asd", ios_base::in);
+	is >> s;
+	assert(s.size() == 3);
+	assert(s == "asd");
 }
 
+uint tests;
+uint successful;
+
 void test(function<void()> f){
+	++tests;
 	try{
 		f();
+		++successful;
 	}catch(logic_error e){
 		cout << "  " << e.what() << endl;
 	}
@@ -78,5 +86,7 @@ int main(){
 	test(testPop);
 	test(testSwap);
 	test(testRead);
+	cout << "Tests successful: " << successful << "/" << tests << endl;
+	cout << "Success percentage: " << ((successful / (double)tests) * 100) << "%" << endl;
 	return 0;
 }

@@ -90,10 +90,11 @@ public:
 		}
 		return st;
 	}
-	//TODO:
+	
 	friend std::istream& operator>>(std::istream &st, String &s){
 		char c;
-		while(c = st.get() && (c != '\n' || c != '\r')){
+		while(st.get(c)){
+			if(c == ' ' || c == '\n' || c == '\r') break;
 			s += c;
 		}
 		return st;
