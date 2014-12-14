@@ -1,0 +1,7 @@
+Task was to create custom String akin the one in STL.
+My solution is backed with array that is always power of 2.
+The length of the backing array and string are maintained in class variables.
+When the length exceeds/is equal of the backing array then array is grown to next power of 2.
+Implementation doesn't check if after growing indexing is exceeded.
+Implementation doesn't handle case where there isn't enough continuous memory for backing array.
+Out of bounds indexing is checked with asserts for performance which means that without using debug mode bugs aren't apparent.

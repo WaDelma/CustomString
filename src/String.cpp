@@ -38,6 +38,13 @@ String& String::operator=(const String &other){
 	return *this;
 }
 
+
+bool String::check() const{
+    // Cannot really check if there is enough space in s
+	// s exists and strings length is smaller that backing array and backing array is power of 2
+	return s && length < maxl &&(maxl & (maxl - 1)) == 0;
+}
+
 String& String::operator+= (char c){
 	push_back(c);
 }
